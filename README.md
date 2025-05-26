@@ -5,8 +5,8 @@ This project demonstrates how to deploy a simple GPT-2-powered chatbot using [Mi
 ## Project Structure
 
 ```bash
-k0s-chatbot-demo
-├── demo # Main application and Kubernetes manifests
+k0s-ai-chatbot-demo
+├── k0s-demo # Main application and Kubernetes manifests
 │    ├── app
 │    │    ├── backend # Flask backend with GPT-2 model
 │    │    └── frontend # Simple HTML frontend for user interaction
