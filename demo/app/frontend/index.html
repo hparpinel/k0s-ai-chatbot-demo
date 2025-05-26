@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GPT-2 AI Chatbot Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background-color: #f9f9f9;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #eee;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>GPT-2 AI Chatbot Demo</h1>
+
+  <h2>About this AI Chatbot</h2>
+  <p>
+    This chatbot uses <strong>GPT-2</strong>, a language model developed by OpenAI. It generates human-like text based on the prompt you provide.
+  </p>
+  <p>
+    GPT-2 is not connected to the internet and does not have up-to-date or real-time information. It's best used for:
+  </p>
+  <ul>
+    <li>Writing prompts or creative storytelling</li>
+    <li>Explaining concepts in simple terms</li>
+    <li>Expanding short ideas into full sentences</li>
+  </ul>
+  <p>
+    Try entering a prompt like <em>"Explain Kubernetes in simple terms"</em> or <em>"Write a paragraph about a futuristic city"</em>.
+  </p>
+  <hr>
+
+  <input type="text" id="prompt" placeholder="e.g., Write a paragraph about cloud computing">
+  <button onclick="sendPrompt()">Send</button>
+
+  <h3>Response:</h3>
+  <pre id="response">Your generated text will appear here...</pre>
+
+  <script>
+    async function sendPrompt() {
+      const prompt = document.getElementById("prompt").value;
+      const responseBox = document.getElementById("response");
+      responseBox.textContent = "Thinking...";
+
+      try {
+        const res = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+
+        const data = await res.json();
+        responseBox.textContent = data.generated_text || JSON.stringify(data);
+      } catch (error) {
+        responseBox.textContent = "Error: " + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
