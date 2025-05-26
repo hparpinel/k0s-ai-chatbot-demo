@@ -104,16 +104,21 @@ Deploy to your k0s cluster with zero friction:
 
 ```bash
 # Initialize k0s
-curl -sSLf https://get.k0s.sh | sudo sh
-sudo k0s install controller --single
 sudo k0s start
+sudo k0s kubectl get nodes
 
-# Deploy application
+# Load the image into k0s
+docker save ai-chatbot -o ai-chatbot.tar
 sudo k0s ctr images import ai-chatbot.tar
-sudo k0s kubectl apply -f k8s/deployment-local.yaml
-sudo k0s kubectl apply -f k8s/service.yaml
-```
 
+# Apply the YAML files:
+sudo k0s kubectl apply -f k8s/deployment.yaml
+sudo k0s kubectl apply -f k8s/service.yaml
+
+# Check if it’s working:
+sudo k0s kubectl get pods
+sudo k0s kubectl get services
+```
 The app will be available at: [http://localhost:30001](http://localhost:30001)
 
 ---
@@ -123,8 +128,17 @@ The app will be available at: [http://localhost:30001](http://localhost:30001)
 For production environments, utilize container registries:
 
 ```bash
-docker tag ai-chatbot ghcr.io/YOUR_USERNAME/ai-chatbot:latest
-docker push ghcr.io/YOUR_USERNAME/ai-chatbot:latest
+# Tag and push the image:
+docker tag ai-chatbot ghcr.io/hparpinel/ai-chatbot:latest
+docker push ghcr.io/hparpinel/ai-chatbot:latest
+
+# Then update the cluster config and apply:
+sudo k0s kubeconfig admin > ~/.kube/config
+kubectl apply -f k8s/deployment-ghcr.yaml
+
+#Finally, check the new pod:
+sudo k0s kubectl get pods
+
 ```
 
 k0s makes scaling simple with:
