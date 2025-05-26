@@ -64,7 +64,7 @@ This demo was tested on **Ubuntu Linux**. Other Linux distributions may work, bu
 First, clone this repository and navigate to the project directory:
 
 ```bash
-git clone https://github.com/hparpinel/k0s-demo.git
+git clone https://github.com/hparpinel/k0s-ai-chatbot-demo.git
 cd k0s-demo
 ```
 
@@ -132,11 +132,19 @@ For production environments, utilize container registries:
 docker tag ai-chatbot ghcr.io/hparpinel/ai-chatbot:latest
 docker push ghcr.io/hparpinel/ai-chatbot:latest
 
+# Optional: Create registry secret if needed
+kubectl create secret docker-registry ghcr-creds \
+  --docker-server=ghcr.io \
+  --docker-username=YOUR_USERNAME \
+  --docker-password=YOUR_GHCR_TOKEN \
+  --docker-email=YOUR_USERNAME@email.com
+
+
 # Then update the cluster config and apply:
 sudo k0s kubeconfig admin > ~/.kube/config
 kubectl apply -f k8s/deployment-ghcr.yaml
 
-#Finally, check the new pod:
+# Finally, check the new pod:
 sudo k0s kubectl get pods
 
 ```
@@ -153,8 +161,8 @@ k0s makes scaling simple with:
 Here's a quick look at the project structure to understand how the components fit together:
 
 ```plaintext
-k0s-demo/
-├── demo
+k0s-ai-chatbot-demo/
+├── k0s-demo
 │   ├── app
 │   │   ├── backend
 │   │   │   ├── chatbot.py
